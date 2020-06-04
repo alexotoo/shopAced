@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const checkAuth = require("../Auth/check-auth");
 
 const Order = require("../models/order");
 const Product = require("../models/product");
 
 //incoming GET order request
-router.get("/", (req, res, next) => {
+router.get("/", checkAuth, (req, res, next) => {
   Order.find()
     .select("product quantity _id")
     .populate("product", "name")
@@ -33,7 +34,8 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.post("/", (req, res, next) => {
+//post add order
+router.post("/", checkAuth, (req, res, next) => {
   Product.findById(req.body.productId)
     .then((product) => {
       if (!product) {
@@ -71,7 +73,8 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.get("/:orderId", (req, res, next) => {
+//get particular order
+router.get("/:orderId", checkAuth, (req, res, next) => {
   const id = req.params.orderID;
   res.status(200).json({
     message: "oder details",
@@ -79,7 +82,8 @@ router.get("/:orderId", (req, res, next) => {
   });
 });
 
-router.delete("/:orderId", (req, res, next) => {
+//delete particular order
+router.delete("/:orderId", checkAuth, (req, res, next) => {
   res.status(200).json({
     message: "deleted orders",
     orderId: req.params.orderId,
