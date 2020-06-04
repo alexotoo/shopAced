@@ -8,6 +8,7 @@ require("dotenv").config();
 //routePaTHS====
 const productRoutes = require("./routes/products");
 const ordersRoutes = require("./routes/orders");
+const userRoutes = require("./routes/user");
 
 //data connection, this password has been hardcodec in nodemon.json file for easy reload
 mongoose.connect(
@@ -31,6 +32,7 @@ app.get("/", (req, res) => res.send("Welcom Home"));
 app.use("/products", productRoutes);
 //orders!!
 app.use("/orders", ordersRoutes);
+app.use("/user", userRoutes);
 
 //error handling=====
 app.use((req, res, next) => {
