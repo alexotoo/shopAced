@@ -17,6 +17,7 @@ mongoose.connect(
     useNewUrlParser: true,
   }
 );
+mongoose.set("useCreateIndex", true);
 
 //use middlewares=====
 app.use(morgan("short"));
