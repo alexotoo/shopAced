@@ -1,11 +1,11 @@
-const express = require("express");
+import express from "express";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 const router = express.Router();
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-
-const User = require("../models/user");
+import User from "../models/user.js";
 
 router.post("/signup", (req, res, next) => {
   User.find({ email: req.body.email })
@@ -110,4 +110,4 @@ router.delete("/:userId", (req, res, next) => {
     });
 });
 
-module.exports = router;
+export default router;

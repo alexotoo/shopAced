@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const mongoose = require("mongoose");
-const checkAuth = require("../Auth/check-auth");
+import express from "express";
+import mongoose from "mongoose";
+import verifyUserAuth from "../Auth/check-auth.js";
 
-const Order = require("../models/order");
-const Product = require("../models/product");
+import Order from "../models/order.js";
+import Product from "../models/product.js";
+
+const router = express.Router();
 
 //incoming GET order request
-router.get("/", checkAuth, (req, res, next) => {
+router.get("/", verifyUserAuth, (req, res, next) => {
   Order.find()
     .select("product quantity _id")
     .populate("product", "name")
@@ -35,7 +36,7 @@ router.get("/", checkAuth, (req, res, next) => {
 });
 
 //post add order
-router.post("/", checkAuth, (req, res, next) => {
+router.post("/", verifyUserAuth, (req, res, next) => {
   Product.findById(req.body.productId)
     .then((product) => {
       if (!product) {
@@ -74,7 +75,7 @@ router.post("/", checkAuth, (req, res, next) => {
 });
 
 //get particular order
-router.get("/:orderId", checkAuth, (req, res, next) => {
+router.get("/:orderId", verifyUserAuth, (req, res, next) => {
   const id = req.params.orderID;
   res.status(200).json({
     message: "oder details",
@@ -83,11 +84,11 @@ router.get("/:orderId", checkAuth, (req, res, next) => {
 });
 
 //delete particular order
-router.delete("/:orderId", checkAuth, (req, res, next) => {
+router.delete("/:orderId", verifyUserAuth, (req, res, next) => {
   res.status(200).json({
     message: "deleted orders",
     orderId: req.params.orderId,
   });
 });
 
-module.exports = router;
+export default router;

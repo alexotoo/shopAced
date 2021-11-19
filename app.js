@@ -1,22 +1,24 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import mongoose from "mongoose";
+import "dotenv/config";
+
 const app = express();
-const cors = require("cors");
-const morgan = require("morgan");
-const mongoose = require("mongoose");
-require("dotenv").config();
+
+//Server PORT
+const port = process.env.PORT || 3500;
 
 //routePaTHS====
-const productRoutes = require("./routes/products");
-const ordersRoutes = require("./routes/orders");
-const userRoutes = require("./routes/user");
+import productRoutes from "./routes/products.js";
+import ordersRoutes from "./routes/orders.js";
+import userRoutes from "./routes/user.js";
 
 //data connection, this password has been hardcodec in nodemon.json file for easy reload
-mongoose.connect(
-  process.env.DB_SERVER + process.env.MONGO_ATLAS_PW + process.env.DB_KEY,
-  {
-    useNewUrlParser: true,
-  }
-);
+mongoose.connect(process.env.DB_SERVER + process.env.DB_KEY, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 mongoose.set("useCreateIndex", true);
 
 //use middlewares=====
@@ -28,7 +30,7 @@ app.use(cors());
 
 //Routes===========
 //Home Page!!
-app.get("/", (req, res) => res.send("Welcom Home"));
+app.get("/", (req, res) => res.send("Welcome Home"));
 //Products!!
 app.use("/products", productRoutes);
 //orders!!
@@ -51,4 +53,4 @@ app.use((error, req, res, next) => {
   });
 });
 
-module.exports = app;
+app.listen(port, () => console.log(`server running on port:${port}`));

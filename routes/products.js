@@ -1,10 +1,12 @@
-const express = require("express");
-const router = express.Router();
-const mongoose = require("mongoose");
-const multer = require("multer");
-const checkAuth = require("../Auth/check-auth");
+import express from "express";
+import mongoose from "mongoose";
 
-//multer storage staregies
+import multer from "multer";
+import checkAuth from "../Auth/check-auth.js";
+import Product from "../models/product.js";
+
+const router = express.Router();
+//multer storage strategies
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads");
@@ -14,8 +16,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-
-const Product = require("../models/product");
 
 //gets all products
 router.get("/", (req, res, next) => {
@@ -135,4 +135,4 @@ router.delete("/:productId", checkAuth, (req, res, next) => {
     });
 });
 
-module.exports = router;
+export default router;
